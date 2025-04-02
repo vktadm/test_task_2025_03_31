@@ -7,4 +7,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD python main.py
+EXPOSE 5000
+
+CMD flask --app app run
