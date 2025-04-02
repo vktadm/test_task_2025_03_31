@@ -13,16 +13,17 @@ def login():
     username = request.json.get("username")
     password = request.json.get("password")
 
-    if not validate_user(username, password):
+    user = validate_user(username, password)
+    if not user:
         return jsonify({"message": "Invalid login or password"}), 401
 
-    return jsonify(set_jwt_token(username)), 200
+    return jsonify(set_jwt_token(user)), 200
 
 
 @bp.route("/logout", methods=["DELETE"])
 @jwt_required()
 def logout():
-    jti = get_jwt().get("jti")
+    jti = get_jwt()["jti"]
     revoked_jwt_token(jti)
     return jsonify({"message": "Access token revoked"}), 401
 
@@ -31,8 +32,13 @@ def logout():
 def register():
     username = request.json.get("username")
     password = request.json.get("password")
+    role = request.json.get("role")
     if username and password:
-        user = create_user(username, password)
-        if not user:
+        user = create_user(username, password, role)
+        if user is None:
             return jsonify({"message": f"User: {username} already exists"}), 409
-    return jsonify({"message": f"User: {username}, registered successfully"}), 201
+        return (
+            jsonify({"message": f"User: {user.username}, registered successfully"}),
+            201,
+        )
+    return jsonify({"message": "Fill username and password"}), 400
