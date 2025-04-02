@@ -11,7 +11,7 @@ jwt = JWTManager()
 
 # Redis blocklist.
 jwt_redis_blocklist = redis.StrictRedis(
-    host="localhost", port=6379, db=0, decode_responses=True
+    host="172.17.0.2", port=8080, db=0, decode_responses=True
 )
 
 
@@ -28,8 +28,8 @@ def create_app():
 
     from app.models import User
 
-    # with app.app_context():
-    #     db.create_all()
+    with app.app_context():
+        db.create_all()
 
     # Callback function to check if a JWT exists in the redis blocklist.
     @jwt.token_in_blocklist_loader

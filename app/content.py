@@ -21,7 +21,7 @@ def main():
 def admin():
     """Protected endpoint for admin."""
     if current_user.role != Role.ADMIN:
-        return jsonify({"message": "Access is denied"})
+        return jsonify({"message": "Access is denied"}), 403
     return jsonify(
         {
             "message": "This is protected endpoint for admin",
