@@ -3,8 +3,8 @@
 ### Используемые технологии
 - Flask, SQLAlchemy
 - Redis - хранение blacklist токенов
+- Docker
 - SQLite - хранение данных пользователя `username, password, role: admin/user`
-- poetry - зависимости проекта
 - bcrypt - шифрование/дешифрование паролей пользователя
 
 ### Структура проекта
@@ -24,26 +24,26 @@ teast_task.../
 ```
 ### Скриншоты работы
 - Попытка авторизоваться с некоректным логином
-![](inc/Screenshot 2025-04-02 at 14.44.22.png)
+![1](inc/Screenshot 2025-04-02 at 14.44.22.png)
 - Удачная авторизация
-![](inc/Screenshot 2025-04-02 at 14.45.25.png)
+![2](inc/Screenshot 2025-04-02 at 14.45.25.png)
 - Доступ к защищенному endpoint с **token из whitelist**
-![](inc/Screenshot 2025-04-02 at 14.45.52.png)
+![3](inc/Screenshot 2025-04-02 at 14.45.52.png)
 - Доступ к защищенному endpoint с **несуществующим token**
-![](inc/Screenshot 2025-04-02 at 14.46.09.png)
+![4](inc/Screenshot 2025-04-02 at 14.46.09.png)
 - Аннуляция token
-![](inc/Screenshot 2025-04-02 at 14.46.26.png)
+![5](inc/Screenshot 2025-04-02 at 14.46.26.png)
 - Попытка получить доступ к защищенному контенту с **token из blacklist**
-![](inc/Screenshot 2025-04-02 at 14.46.36.png)
+![6](inc/Screenshot 2025-04-02 at 14.46.36.png)
 - Регистрация пользователя со статусом - администратор
-![](inc/Screenshot 2025-04-02 at 14.48.29.png)
+![7](inc/Screenshot 2025-04-02 at 14.48.29.png)
 - Авторизация администратора
-![](inc/Screenshot 2025-04-02 at 14.48.59.png)
+![8](inc/Screenshot 2025-04-02 at 14.48.59.png)
 - Доступ **администратора** к защищенному endpoint **доступному для всех ролей**
-![](inc/Screenshot 2025-04-02 at 14.49.16.png)
+![9](inc/Screenshot 2025-04-02 at 14.49.16.png)
 - Доступ **администратора** к защищенному endpoint **доступному только администраторы**
-![](inc/Screenshot 2025-04-02 at 14.49.30.png)
+![10](inc/Screenshot 2025-04-02 at 14.49.30.png)
 - Авторизация обычного пользователя
-![](inc/Screenshot 2025-04-02 at 14.49.57.png)
+![11](inc/Screenshot 2025-04-02 at 14.49.57.png)
 - Доступ **обычного пользователя** к защищенному endpoint **доступному только администраторы**
-![](inc/Screenshot 2025-04-02 at 14.50.09.png)
+![12](inc/Screenshot 2025-04-02 at 14.50.09.png)
