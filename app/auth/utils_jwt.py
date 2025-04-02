@@ -1,57 +1,21 @@
-from datetime import datetime, timedelta
-from functools import wraps
-from flask import request, jsonify
+from datetime import timedelta
 
-import jwt
+from flask_jwt_extended import (
+    create_access_token,
+    get_jti,
+    get_jwt,
+)
+from flask import current_app
 
-from app.config import settings
 
-
-def encode_jwt(
-    payload: dict,
-    key: str = settings.secret,
-    algorithm: str = settings.algorithm,
-    expire_minutes: int = settings.access_token_expire_minutes,
-):
-    to_encode = payload.copy()
-    now = datetime.utcnow()
-    expire = now + timedelta(minutes=expire_minutes)
-
-    to_encode.update(
-        exp=expire,
-        iat=now,
+def set_jwt_token(username: str) -> dict:
+    access_token = create_access_token(identity=username)
+    access_token_jti = get_jti(encoded_token=access_token)
+    current_app.extensions["revoked_store"].set(
+        access_token_jti, "false", timedelta(minutes=1)
     )
-    encoded = jwt.encode(to_encode, key, algorithm=algorithm)
-
-    return encoded
+    return dict(access_token=access_token)
 
 
-def decode_jwt(
-    token: str | bytes,
-    key: str = settings.secret,
-    algorithms: str = settings.algorithm,
-):
-    decoded = jwt.decode(
-        jwt=token,
-        key=key,
-        algorithms=algorithms,
-    )
-    return decoded
-
-
-def token_required(func):
-    @wraps(func)
-    def decorated(*args, **kwargs):
-        token = request.json.get("token")
-        if not token:
-            return jsonify({"Alert!": "Token is missing"}), 401
-        try:
-            payload = decode_jwt(token=token)
-        except jwt.ExpiredSignatureError:
-            return jsonify({"Alert!": "Token has expired"}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({"Alert!": "Invalid Token"}), 401
-
-        return func(*args, **kwargs)  # Correctly return the wrapped function
-
-    return decorated
+def revoked_jwt_token(jti):
+    current_app.extensions["revoked_store"].set(jti, "true", timedelta(seconds=5))
