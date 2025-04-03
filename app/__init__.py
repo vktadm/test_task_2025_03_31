@@ -4,15 +4,15 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 
+from app.config import RedisSettings
+
 
 db = SQLAlchemy()
 
 jwt = JWTManager()
 
 # Redis blocklist.
-jwt_redis_blocklist = redis.StrictRedis(
-    host="localhost", port=6379, db=0, decode_responses=True
-)
+jwt_redis_blocklist = redis.StrictRedis(**RedisSettings.get_data())
 
 
 def create_app():
