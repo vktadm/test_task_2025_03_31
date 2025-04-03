@@ -11,7 +11,7 @@ jwt = JWTManager()
 
 # Redis blocklist.
 jwt_redis_blocklist = redis.StrictRedis(
-    host="172.17.0.2", port=8080, db=0, decode_responses=True
+    host="localhost", port=6379, db=0, decode_responses=True
 )
 
 
